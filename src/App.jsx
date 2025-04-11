@@ -4,22 +4,9 @@ import TodoItems from "./components/TodoItems";
 import "./App.css";
 import Message from "./components/Message";
 import { useState } from "react";
+import { TodoItemsContext } from "./store/todo-items-store";
 
 function App() {
-  const initialTodoItems = [
-    {
-      name: "Exercise",
-      dueDate: "24/3/25",
-    },
-    {
-      name: "Study",
-      dueDate: "25/3/25",
-    },
-    {
-      name: "Sleep",
-      dueDate: "26/3/25",
-    },
-  ];
 
   const [todoItems, setTodoItems] = useState([]);
 
@@ -30,7 +17,8 @@ function App() {
         name: itemName,
         dueDate: itemDueDate,
       },
-    ]);
+    ]
+  );
   };
 
   const handleDeleteItems = (todoItemName) => {
@@ -39,15 +27,17 @@ function App() {
   };
 
   return (
+    <TodoItemsContext.Provider value={todoItems}>
     <center className="todo-container main-container">
       <AppName />
       <AddTodo onNewItem={handleNewItem} />
-      {todoItems.length === 0 && <Message></Message>}
+      <Message todoItems={todoItems}></Message>
       <TodoItems
         todoItems={todoItems}
         onDeleteClick={handleDeleteItems}
       ></TodoItems>
     </center>
+  </TodoItemsContext.Provider>
   );
 }
 
